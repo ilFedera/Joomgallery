@@ -415,7 +415,7 @@ final class JoomImage extends Adapter implements SubscriberInterface
     $value = \intval($value);
 
     // We only want to handle joomgallery images that get changed in the publishing state.
-    if(str_contains($context, 'com_joomgallery.image', ) && $value >= 0)
+    if(str_contains($context, 'com_joomgallery.image') && $value >= 0)
     {
       // Save the item type
       $this->item_type = 'com_joomgallery.image';
