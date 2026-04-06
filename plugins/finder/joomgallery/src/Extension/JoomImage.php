@@ -508,9 +508,9 @@ final class JoomImage extends Adapter implements SubscriberInterface
 
     // Get the dates
     $item->publish_start_date = $item->date;
+    $item->start_date         = $item->date;
+    $item->publish_end_date   = null;
     unset($item->date);
-    //$item->publish_end_date = '0000-00-00 00:00:00';
-    $item->publish_end_date = null;
 
     // Initialize the item parameters.
     $item->params = new Registry($item->params);
