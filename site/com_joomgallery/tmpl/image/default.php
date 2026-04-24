@@ -57,7 +57,7 @@ $tags      = $tagLayout->render($this->item->tags);
 $metadataLayout = new FileLayout('joomgallery.content.metadata');
 $metadata       = $metadataLayout->render($this->item->imgmetadata);
 
-// add meta title 
+// add meta title
 $app = Factory::getApplication();
 $doc = $app->getDocument();
 $title = $this->item->title ?? '';
@@ -68,9 +68,11 @@ $baseTitle = trim($prefix . ' ' . $title);
 
 if ($sitename_pagetitles == 1) {
     $fullTitle = $sitename . ' - ' . $baseTitle;
-} elseif ($sitename_pagetitles == 2) {
+} 
+elseif ($sitename_pagetitles == 2) {
     $fullTitle = $baseTitle . ' - ' . $sitename;
-} else {
+} 
+else {
     $fullTitle = $baseTitle;
 }
 
