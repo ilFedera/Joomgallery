@@ -68,10 +68,10 @@ $baseTitle = trim($prefix . ' ' . $title);
 
 if ($sitename_pagetitles == 1) {
     $fullTitle = $sitename . ' - ' . $baseTitle;
-} 
+}
 elseif ($sitename_pagetitles == 2) {
     $fullTitle = $baseTitle . ' - ' . $sitename;
-} 
+}
 else {
     $fullTitle = $baseTitle;
 }
