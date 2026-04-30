@@ -66,11 +66,11 @@ $sitename_pagetitles = $app->get('sitename_pagetitles', 0);
 $prefix = Text::_('COM_JOOMGALLERY_META_TITLE_PREFIX');
 $baseTitle = trim($prefix . ' ' . $title);
 
-if ($sitename_pagetitles == 1)
+if($sitename_pagetitles == 1)
 {
     $fullTitle = $sitename . ' - ' . $baseTitle;
 }
-elseif ($sitename_pagetitles == 2)
+elseif($sitename_pagetitles == 2)
 {
     $fullTitle = $baseTitle . ' - ' . $sitename;
 }
