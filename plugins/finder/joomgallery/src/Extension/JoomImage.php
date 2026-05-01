@@ -507,8 +507,8 @@ final class JoomImage extends Adapter implements SubscriberInterface
     $item->access = max($item->access, $item->cat_access);
 
     // Get the dates
-    $item->publish_start_date = $item->date;
-    $item->start_date         = $item->date;
+    $item->publish_start_date = $item->created_time;
+    $item->start_date         = $item->created_time;
     $item->publish_end_date   = null;
     unset($item->date);
 
