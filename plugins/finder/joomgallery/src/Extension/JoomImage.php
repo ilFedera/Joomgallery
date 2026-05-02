@@ -564,7 +564,7 @@ final class JoomImage extends Adapter implements SubscriberInterface
     // Add the category taxonomy data.
     if(\in_array('category', $taxonomies))
     {
-      $item->addTaxonomy('Category', $item->category, $item->cat_state, $item->cat_access);
+      $item->addTaxonomy('Category', $item->category . ' [id:' . (int) $item->catid . ']', $item->cat_state, $item->cat_access);
     }
 
       // Add the language taxonomy data.
@@ -581,7 +581,7 @@ final class JoomImage extends Adapter implements SubscriberInterface
       // Add the tags taxonomy data. (multi-value taxonomy)
       if(\in_array('tags', $taxonomies))
       {
-        $item->addTaxonomy('Tags', $tag->title, $tag->published, $tag->access, $tag->language);
+        $item->addTaxonomy('Tags', $tag->title  . ' [id:' . (int) $tag->id . ']', $tag->published, $tag->access, $tag->language);
       }
     }
 
@@ -1139,7 +1139,7 @@ final class JoomImage extends Adapter implements SubscriberInterface
   {
     $db    = $this->getDatabase();
     $query = $db->getQuery(true)
-      ->select('t.title, t.access, t.published, t.language')
+      ->select('t.id, t.title, t.access, t.published, t.language')
       ->from($db->quoteName('#__joomgallery_tags', 't'))
       ->join('INNER', $db->quoteName('#__joomgallery_tags_ref', 'ref') . ' ON ' . $db->quoteName('ref.tagid') . ' = ' . $db->quoteName('t.id'))
       ->where($db->quoteName('ref.imgid') . ' = ' . (int) $imgId)
