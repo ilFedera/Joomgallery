@@ -630,7 +630,7 @@ final class JoomImage extends Adapter implements SubscriberInterface
       ->select('a.id, a.title AS title, a.alias, a.author AS author, a.description AS summary')
       ->select('a.published AS state, a.catid, a.date')
       ->select('a.hidden, a.featured, a.checked_out, a.approved, a.params, a.language')
-      ->select('a.metakey, a.metadesc, a.access, a.ordering')
+      ->select('a.metakey, a.metadesc, a.access, a.ordering, a.created_time')
       ->select('c.title AS category, c.published AS cat_state')
       ->select('u.name AS owner')
       ->from($this->table . ' AS a')
