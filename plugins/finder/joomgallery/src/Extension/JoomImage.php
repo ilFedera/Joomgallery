@@ -564,7 +564,7 @@ final class JoomImage extends Adapter implements SubscriberInterface
     // Add the category taxonomy data.
     if(\in_array('category', $taxonomies))
     {
-      $item->addTaxonomy('Category', $item->category . ' [id:' . (int) $item->catid . ']', $item->cat_state, $item->cat_access);
+      $item->addTaxonomy('Category', $item->category, $item->cat_state, $item->cat_access);
     }
 
       // Add the language taxonomy data.
@@ -581,7 +581,7 @@ final class JoomImage extends Adapter implements SubscriberInterface
       // Add the tags taxonomy data. (multi-value taxonomy)
       if(\in_array('tags', $taxonomies))
       {
-        $item->addTaxonomy('Tags', $tag->title  . ' [id:' . (int) $tag->id . ']', $tag->published, $tag->access, $tag->language);
+        $item->addTaxonomy('Tags', $tag->title, $tag->published, $tag->access, $tag->language);
       }
     }
 
