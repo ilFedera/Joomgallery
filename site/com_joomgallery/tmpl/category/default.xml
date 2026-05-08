@@ -244,6 +244,22 @@
                 <option value="2">COM_JOOMGALLERY_MENU_CATEGORY_VIEW_PAGINATION_OPT2</option>
             </field>
             <field
+                name="jg_category_view_image_ordering"
+                type="jglist"
+                useglobal="true"
+                label="COM_JOOMGALLERY_MENU_IMAGE_ORDERING_LABEL"
+                description="COM_JOOMGALLERY_MENU_IMAGE_ORDERING_DESC"
+                default=""
+                validate="options"
+                >
+              <option value="a.ordering ASC">COM_JOOMGALLERY_IMAGE_ORDERING</option>
+              <option value="a.title ASC">JGLOBAL_TITLE_ASC</option>
+              <option value="a.title DESC">JGLOBAL_TITLE_DESC</option>
+              <option value="a.date ASC">COM_JOOMGALLERY_DATE_ASC</option>
+              <option value="a.date DESC">COM_JOOMGALLERY_DATE_DESC</option>
+              <option value="random">COM_JOOMGALLERY_RANDOM</option>
+            </field>      
+            <field
                 name="jg_category_view_number_of_reloaded_images"
                 type="jgnumber"
                 useglobal="true"
