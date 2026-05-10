@@ -508,7 +508,7 @@ class CategoryModel extends JoomItemModel
     // if it is not explicitly given in the request
     $listModel->setState('list.start', $params['configs']->get('jg_category_view_limit_start', $imgform_limitstart));
 
-        // Apply ordering
+    // Apply ordering
     $listModel->setState('list.ordering', '');
     $listModel->setState('list.fullordering', $params['configs']->get('jg_category_view_ord_images', 'a.date ASC', 'string'));
   }
