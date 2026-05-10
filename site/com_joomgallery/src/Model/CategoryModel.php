@@ -517,31 +517,31 @@ class CategoryModel extends JoomItemModel
 
     if($menu)
     {
-    $menuOrdering = $menu->getParams()->get('jg_category_view_image_ordering', '');
+      $menuOrdering = $menu->getParams()->get('jg_category_view_image_ordering', '');
     }
 
     if(!empty($menuOrdering))
     {
       if($menuOrdering === 'random')
       {
-      $fullordering = 'RAND()';
+        $fullordering = 'RAND()';
       }
       else
       {
-      $fullordering = $menuOrdering;
+        $fullordering = $menuOrdering;
       }
     }
     else
-  {
-  $fullordering = $params['configs']->get('jg_category_view_ord_images', 'a.date ASC', 'string');
-
-    if($fullordering === 'random')
     {
-    $fullordering = 'RAND()';
-    }
-  }
+      $fullordering = $params['configs']->get('jg_category_view_ord_images', 'a.date ASC', 'string');
 
-  $listModel->setState('list.fullordering', $fullordering);
+      if($fullordering === 'random')
+      {
+        $fullordering = 'RAND()';
+      }
+    }
+
+    $listModel->setState('list.fullordering', $fullordering);
   }
 
   /**
