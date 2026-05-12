@@ -741,6 +741,11 @@ class JoomHelper
     // Load categories
     $table->load($cat->id);
 
+    if($ids)
+    {
+      return array_column($table->getNodeTree($type, $self, $root), 'id');
+    }
+
     return $table->getNodeTree($type, $self, $root);
   }
 
