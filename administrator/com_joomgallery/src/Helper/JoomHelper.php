@@ -709,12 +709,13 @@ class JoomHelper
    * @param   string              $type        Which kind of nde tree (default: cpl)
    * @param   bool                $self        Include current node id (default: false)
    * @param   bool                $root        Include root node (default: false)
+   * @param   bool                $ids         True to return only ids (default: false)
    *
    * @return  array
    *
    * @since   4.4.0
    */
-  public static function getCategories($cat, $type = 'cpl', $self = false, $root = false)
+  public static function getCategories($cat, $type = 'cpl', $self = false, $root = false, $ids = false)
   {
     $cats = [];
 
@@ -741,6 +742,72 @@ class JoomHelper
     $table->load($cat->id);
 
     return $table->getNodeTree($type, $self, $root);
+  }
+
+  /**
+   * Returns a list of images of a specific category
+   *
+   * @param   string/object/int   $cat         Alias, database object or ID of the category
+   * @param   bool                $subcats     Also include images from subcategories (default: own)
+   * @param   bool                $ids         True to return only ids (default: false)
+   *
+   * @return  array
+   *
+   * @since   4.4.0
+   */
+  public static function getImages($cat, $subcats = false, $states = [], $ids = false)
+  {
+    if(!\is_object($cat))
+    {
+      if((!is_numeric($cat) && !\is_string($cat)) || $cat == 0)
+      {
+        // no actual category given
+        return [];
+      }
+
+      $cat = self::getRecord('category', $cat);
+    }
+
+    // Load subcategories
+    $cat = array_column(self::getCategories($cat, 'childs', true, false, true), 'id');
+
+    // Load images list model
+    $listModel = self::getComponent()->getMVCFactory()->createModel('images', 'administrator');
+    $listModel->getState();
+
+    if($ids)
+    {
+      $fields = ['id'];
+    }
+    else
+    {
+      $fields = ['id', 'alias', 'catid', 'title', 'description', 'filename', 'filesystem', 'author', 'date', 'hits', 'votes', 'votesum'];
+    }
+
+    // Select fields to load
+    $fields = self::addColumnPrefix('a', $fields);
+
+    // Apply preselected filters and fields selection for images
+    $listModel->setState('list.select', $fields);
+    $listModel->setState('filter.category', $cat);
+
+    // Add filters and or list start/ordering
+    foreach ($states as $key => $value)
+    {
+      $listModel->setState($key, $value);
+    }
+
+    // Get images
+    if($ids)
+    {
+      // Flatten the returning array
+      return array_column($listModel->getItems(), 'id');
+    }
+    else
+    {
+      // Return the list of objects
+      return $listModel->getItems();
+    }
   }
 
   /**
@@ -1458,5 +1525,28 @@ class JoomHelper
     $db->setQuery($query);
 
     return (int) $db->loadResult();
+  }
+
+  /**
+   * Method to add a prefix to a list of field names
+   *
+   * @param   string  $prefix   The prefix to apply
+   * @param   array   $fields   List of fields
+   *
+   * @return  array   List of fields with applied prefix
+   */
+  protected static function addColumnPrefix(string $prefix, array $fields): array
+  {
+    foreach($fields as $key => $field)
+    {
+      $field = (string) $field;
+
+      if(strpos($field, $prefix . '.') === false)
+      {
+        $fields[$key] = $prefix . '.' . $field;
+      }
+    }
+
+    return $fields;
   }
 }

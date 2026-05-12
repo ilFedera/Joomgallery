@@ -328,7 +328,7 @@ final class JoomImage extends Adapter implements SubscriberInterface
         }
 
         // Process the change.
-        $this->categoryStateChange([$row->id], $value, false);
+        $this->itemStateChange([$row->id], $value, false);
       }
     }
   }
@@ -414,13 +414,29 @@ final class JoomImage extends Adapter implements SubscriberInterface
 
     $value = \intval($value);
 
-    // We only want to handle joomgallery images that get changed in the publishing state.
-    if(str_contains($context, 'com_joomgallery.image') && $value >= 0)
+    // We only want to handle the reindexing of joomgallery images.
+    if((str_contains($context, 'com_joomgallery.image') || str_contains($context, 'com_joomgallery.category')) && $value >= 0)
     {
       // Save the item type
-      $this->item_type = 'com_joomgallery.image';
+      if(str_contains($context, 'com_joomgallery.image'))
+      {
+        $this->item_type = 'com_joomgallery.image';
+      }
+      else
+      {
+        $this->item_type = 'com_joomgallery.category';
+      }
 
       $this->itemStateChange($pks, $value);
+    }
+
+    // We only want to handle the reindexing of joomgallery categories.
+    if(str_contains($context, 'com_joomgallery.category') && $value >= 0)
+    {
+      // Save the item type
+      $this->item_type = 'com_joomgallery.category';
+
+      $this->categoryStateChange($pks, $value);
     }
 
     // Handle when the plugin is disabled.
@@ -446,18 +462,20 @@ final class JoomImage extends Adapter implements SubscriberInterface
     if(version_compare(JVERSION, '5.0.0', '<'))
     {
       // Joomla 4
-      [$value] = $event->getArguments();
+      [$context, $pks, $value] = $event->getArguments();
     }
     else
     {
       // Joomla 5 or newer
-      $value = $event->getValue();
+      $context = $event->getContext();
+      $pks     = $event->getPks();
+      $value   = $event->getValue();
     }
 
     $value = \intval($value);
 
     // We only want to handle joomgallery categories that get changed in the publishing state.
-    if($event->getExtension() === 'com_joomgallery.category' && $value >= 0)
+    if(str_contains($context, 'com_joomgallery.category') && $value >= 0)
     {
       // Save the item type
       $this->item_type = 'com_joomgallery.category';
@@ -678,7 +696,7 @@ final class JoomImage extends Adapter implements SubscriberInterface
     // Additional item states
     $query->select('a.hidden AS hidden, a.approved AS approved');
 
-    // Additional category states
+    // Additional parent category states
     $query->select('c.hidden AS cat_hidden, c.in_hidden AS cat_inhidden, c.exclude_search AS cat_exclude');
 
     // Item and category access levels
@@ -700,7 +718,7 @@ final class JoomImage extends Adapter implements SubscriberInterface
    */
   protected function checkCategoryState($row)
   {
-  $db = $this->getDatabase();
+    $db = $this->getDatabase();
 
     $query = $db->getQuery(true)
       ->select($db->quoteName('published'))
@@ -842,6 +860,22 @@ final class JoomImage extends Adapter implements SubscriberInterface
   protected function itemStateChange($pks, $value, $reindex = true)
   {
     $db = $this->getDatabase();
+
+    if($this->item_type == 'com_joomgallery.category')
+    {
+      $this->categoryStateChange($pks, $value, $reindex = true);
+
+      $img_ids = [];
+
+      // Change also the state of all images in each subcategories
+      foreach ($pks as $cat_id)
+      {
+        $img_ids = array_unique(array_merge($img_ids, JoomHelper::getImages($cat_id, true, [], true)));
+      }
+
+      // Override category pks with image pks
+      $pks = $img_ids;
+    }
 
     /*
      * The item's published state is tied to the category
