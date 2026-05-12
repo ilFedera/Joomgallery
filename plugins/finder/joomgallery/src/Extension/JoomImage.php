@@ -868,7 +868,7 @@ final class JoomImage extends Adapter implements SubscriberInterface
       $img_ids = [];
 
       // Change also the state of all images in each subcategories
-      foreach ($pks as $cat_id)
+      foreach($pks as $cat_id)
       {
         $img_ids = array_unique(array_merge($img_ids, JoomHelper::getImages($cat_id, true, [], true)));
       }

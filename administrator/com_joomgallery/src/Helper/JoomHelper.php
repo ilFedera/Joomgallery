@@ -792,7 +792,7 @@ class JoomHelper
     $listModel->setState('filter.category', $cat);
 
     // Add filters and or list start/ordering
-    foreach ($states as $key => $value)
+    foreach($states as $key => $value)
     {
       $listModel->setState($key, $value);
     }
@@ -803,11 +803,9 @@ class JoomHelper
       // Flatten the returning array
       return array_column($listModel->getItems(), 'id');
     }
-    else
-    {
-      // Return the list of objects
-      return $listModel->getItems();
-    }
+
+    // Return the list of objects
+    return $listModel->getItems();
   }
 
   /**
