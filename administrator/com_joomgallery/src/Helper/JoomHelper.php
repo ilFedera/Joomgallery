@@ -1099,7 +1099,7 @@ class JoomHelper
   {
 
     // Check for user_agent in php.ini
-    if(!ini_get('user_agent'))
+    if(!\ini_get('user_agent'))
     {
       $version = new Version();
       ini_set('user_agent', $version->getUserAgent('Joomla', true, false));
