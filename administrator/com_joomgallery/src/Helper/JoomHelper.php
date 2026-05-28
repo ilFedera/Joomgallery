@@ -21,6 +21,7 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Version;
 use Joomla\Component\Media\Administrator\Exception\FileNotFoundException;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Filesystem\Path;
@@ -1096,6 +1097,14 @@ class JoomHelper
    */
   public static function fetchXML(string $uri): \SimpleXMLElement
   {
+
+    // Check for user_agent in php.ini
+    if(!ini_get('user_agent'))
+    {
+      $version = new Version();
+      ini_set('user_agent', $version->getUserAgent('Joomla', true, false));
+    }
+
     // Create the XMLReader object.
     $reader = new \XMLReader();
 
