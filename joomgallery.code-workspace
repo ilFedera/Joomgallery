@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "intelephense.environment.includePaths": [
+      "G:\\COMPONENTI JOOMLA\\stubs"
+    ],
+    "intelephense.diagnostics.undefinedTypes": false,
+    "intelephense.diagnostics.undefinedMethods": false,
+    "cSpell.words": [
+      "Factory"
+    ]
+  }
+}
