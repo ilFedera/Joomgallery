@@ -125,7 +125,7 @@ $this->form->setFieldAttribute('title', 'required', 'false');
               </select>
             </div>
             <div class="mb-3">
-              <button type="button" class="btn btn-primary" id="ftp-import-start">
+              <button type="button" class="btn btn-primary" id="ftp-import-start" disabled>
                 <?php echo Text::_('COM_JOOMGALLERY_FTP_IMPORT_START'); ?>
               </button>
             </div>

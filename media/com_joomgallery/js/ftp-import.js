@@ -150,9 +150,16 @@
     const uploader = document.getElementById('jform_uploader');
     const ftpFile = document.getElementById('jform_ftp_file');
     const ftpAction = document.getElementById('jform_ftp_action');
+    const category = document.getElementById('jform_catid_id');
 
     let files = [];
     let busy = false;
+
+    const hasSelectedCategory = () => category && Number(category.getAttribute('value') || category.value) > 0;
+
+    const updateStartState = () => {
+      start.disabled = busy || !hasSelectedCategory();
+    };
 
     const setProgress = (done, total) => {
       const percent = total ? Math.round((done / total) * 100) : 0;
@@ -218,12 +225,6 @@
 
     const selectedRows = () => Array.from(tbody.querySelectorAll('.ftp-import-check:checked'))
       .map((checkbox) => checkbox.closest('tr'));
-
-    const hasSelectedCategory = () => {
-      const category = document.getElementById('jform_catid_id');
-
-      return category && Number(category.value) > 0;
-    };
 
     const showJoomlaMessage = (type, message) => {
       if (window.Joomla && typeof Joomla.removeMessages === 'function') {
@@ -329,7 +330,7 @@
       ftpFile.value = '';
       ftpAction.value = 'keep';
       busy = false;
-      start.disabled = false;
+      updateStartState();
       refresh.disabled = false;
       const summary = failed
         ? `${text('COM_JOOMGALLERY_FTP_IMPORT_DONE')}: ${done - failed}. ${text('COM_JOOMGALLERY_FTP_IMPORT_FAILED')}: ${failed}.`
@@ -355,6 +356,11 @@
     });
     start.addEventListener('click', importSelected);
 
+    if (category) {
+      category.addEventListener('change', updateStartState);
+    }
+
+    updateStartState();
     loadFiles();
   };
 
