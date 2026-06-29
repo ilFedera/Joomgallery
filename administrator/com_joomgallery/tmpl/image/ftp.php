@@ -36,6 +36,7 @@ $tmpl    = $isModal || $app->input->get('tmpl', '', 'cmd') === 'component' ? '&t
 // Add language strings to JavaScript
 Text::script('JGLOBAL_VALIDATION_FORM_FAILED');
 Text::script('COM_JOOMGALLERY_ERROR_FILL_REQUIRED_FIELDS');
+Text::script('COM_JOOMGALLERY_COMMON_ALERT_YOU_MUST_SELECT_CATEGORY');
 Text::script('COM_JOOMGALLERY_FTP_IMPORT_DIRECTORY');
 Text::script('COM_JOOMGALLERY_FTP_IMPORT_NO_FILES');
 Text::script('COM_JOOMGALLERY_FTP_IMPORT_NO_FILES_SELECTED');
@@ -109,6 +110,18 @@ $this->form->setFieldAttribute('title', 'required', 'false');
                 <option value="keep"><?php echo Text::_('COM_JOOMGALLERY_FTP_IMPORT_KEEP'); ?></option>
                 <option value="delete"><?php echo Text::_('COM_JOOMGALLERY_FTP_IMPORT_DELETE'); ?></option>
                 <option value="move"><?php echo Text::_('COM_JOOMGALLERY_FTP_IMPORT_MOVE'); ?></option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="ftp-import-limit" class="form-label">
+                <?php echo Text::_('COM_JOOMGALLERY_FTP_IMPORT_BATCH_SIZE'); ?>
+              </label>
+              <select id="ftp-import-limit" class="form-select">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
               </select>
             </div>
             <div class="mb-3">

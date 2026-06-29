@@ -235,7 +235,7 @@ final class Joomgallery extends CMSPlugin implements SubscriberInterface
   private function performTask(array $ids, array $task_def, object $params, string $error_msg = ''): array
   {
     $max_time          = (int) \ini_get('max_execution_time');
-    $allowed_batches   = [10, 20, 50, 100, 150];
+    $allowed_batches   = [10, 25, 50, 100];
     $batch_size        = (int) ($params->batch_size ?? 10);
     $processed_in_run  = 0;
 

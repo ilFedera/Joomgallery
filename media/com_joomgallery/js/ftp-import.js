@@ -141,6 +141,7 @@
     const status = document.getElementById('ftp-import-status');
     const path = document.getElementById('ftp-import-path');
     const action = document.getElementById('ftp-import-action');
+    const limit = document.getElementById('ftp-import-limit');
     const progress = document.getElementById('ftp-import-progress');
     const refresh = document.getElementById('ftp-import-refresh');
     const selectAll = document.getElementById('ftp-import-select-all');
@@ -218,6 +219,21 @@
     const selectedRows = () => Array.from(tbody.querySelectorAll('.ftp-import-check:checked'))
       .map((checkbox) => checkbox.closest('tr'));
 
+    const hasSelectedCategory = () => {
+      const category = document.getElementById('jform_catid_id');
+
+      return category && Number(category.value) > 0;
+    };
+
+    const showJoomlaMessage = (type, message) => {
+      if (window.Joomla && typeof Joomla.removeMessages === 'function') {
+        Joomla.removeMessages();
+      }
+
+      Joomla.renderMessages({ [type]: [message] });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     const saveFile = async (row, fileName, filecounter) => {
       const rowStatus = row.querySelector('.ftp-import-row-status');
       const formData = new FormData(form);
@@ -258,17 +274,22 @@
 
       form.classList.remove('was-validated');
 
-      if (!form.checkValidity()) {
-        form.classList.add('was-validated');
-        Joomla.renderMessages({ error: [`${text('JGLOBAL_VALIDATION_FORM_FAILED')}. ${text('COM_JOOMGALLERY_ERROR_FILL_REQUIRED_FIELDS')}`] });
-        window.scrollTo(0, 0);
+      if (!hasSelectedCategory()) {
+        showJoomlaMessage('warning', text('COM_JOOMGALLERY_COMMON_ALERT_YOU_MUST_SELECT_CATEGORY'));
         return;
       }
 
-      const rows = selectedRows();
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        showJoomlaMessage('warning', `${text('JGLOBAL_VALIDATION_FORM_FAILED')}. ${text('COM_JOOMGALLERY_ERROR_FILL_REQUIRED_FIELDS')}`);
+        return;
+      }
+
+      const batchSize = parseInt(limit.value, 10) || 10;
+      const rows = selectedRows().slice(0, batchSize);
 
       if (!rows.length) {
-        Joomla.renderMessages({ warning: [text('COM_JOOMGALLERY_FTP_IMPORT_NO_FILES_SELECTED')] });
+        showJoomlaMessage('warning', text('COM_JOOMGALLERY_FTP_IMPORT_NO_FILES_SELECTED'));
         return;
       }
 

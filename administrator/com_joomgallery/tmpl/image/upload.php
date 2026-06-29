@@ -53,6 +53,7 @@ Text::script('COM_JOOMGALLERY_ERROR_UPPY_UPLOAD');
 Text::script('COM_JOOMGALLERY_ERROR_UPPY_FORM');
 Text::script('COM_JOOMGALLERY_ERROR_UPPY_SAVE_RECORD');
 Text::script('COM_JOOMGALLERY_ERROR_FILL_REQUIRED_FIELDS');
+Text::script('COM_JOOMGALLERY_COMMON_ALERT_YOU_MUST_SELECT_CATEGORY');
 
 $wa->addInlineScript('window.uppyVars = JSON.parse(\'' . json_encode($this->js_vars) . '\');', ['position' => 'before'], [], ['com_joomgallery.uppy-uploader']);
 $wa->addInlineScript(
@@ -106,7 +107,7 @@ $wa->addInlineScript(
       container.innerHTML = '';
     }
 
-    Joomla.renderMessages({ error: [message] });
+    Joomla.renderMessages({ warning: [message] });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
